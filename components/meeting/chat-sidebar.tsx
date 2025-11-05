@@ -1,8 +1,5 @@
 "use client"
 
-import { X, Send } from "lucide-react"
-import { Button } from "@/components/button"
-import { Input } from "@/components/ui/input"
 import { useState } from "react"
 
 interface ChatMessage {
@@ -43,46 +40,44 @@ export function ChatSidebar() {
   }
 
   return (
-    <div className="w-72 border-l border-border bg-card flex flex-col">
-      {/* Header */}
-      <div className="border-b border-border px-4 py-3 flex items-center justify-between">
-        <h2 className="font-semibold text-foreground">Chat</h2>
-        <button className="text-muted-foreground hover:text-foreground">
-          <X className="w-5 h-5" />
-        </button>
-      </div>
+    <div className="sidebar">
+      <div className="sidebar-header">Chat</div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+      <div className="sidebar-content">
         {messages.map((message) => (
-          <div key={message.id} className="space-y-1">
-            <div className="flex items-center justify-between">
-              <p className={`text-sm font-medium ${message.isAI ? "text-primary" : "text-foreground"}`}>
-                {message.sender}
-              </p>
-              <span className="text-xs text-muted-foreground">{message.timestamp}</span>
-            </div>
-            <p className="text-sm text-muted-foreground bg-background/50 rounded px-3 py-2">{message.content}</p>
+          <div key={message.id} className="chat-message">
+            <div className="chat-sender">{message.sender}</div>
+            <div className="chat-text">{message.content}</div>
           </div>
         ))}
       </div>
 
-      {/* Input */}
-      <div className="border-t border-border px-4 py-3 flex gap-2">
-        <Input
-          placeholder="Type a message..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-          className="bg-background border-border text-foreground placeholder:text-muted-foreground"
-        />
-        <Button
-          size="icon"
-          onClick={handleSendMessage}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground flex-shrink-0"
-        >
-          <Send className="w-4 h-4" />
-        </Button>
+      <div className="input-group">
+        <div style={{ display: "flex", gap: "0.5rem" }}>
+          <input
+            type="text"
+            placeholder="Type a message..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+            className="chat-input"
+          />
+          <button
+            onClick={handleSendMessage}
+            style={{
+              padding: "0.5rem 0.75rem",
+              backgroundColor: "#2563eb",
+              color: "white",
+              border: "none",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+              fontSize: "0.875rem",
+            }}
+            title="Send message"
+          >
+            ➤
+          </button>
+        </div>
       </div>
     </div>
   )

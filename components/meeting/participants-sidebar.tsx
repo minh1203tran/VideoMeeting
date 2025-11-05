@@ -1,4 +1,4 @@
-import { X, Hand, Mic, MicOff, VideoOff, MoreVertical } from "lucide-react"
+"use client"
 
 interface ParticipantInfo {
   id: string
@@ -17,42 +17,27 @@ const PARTICIPANTS: ParticipantInfo[] = [
 
 export function ParticipantsSidebar() {
   return (
-    <div className="w-72 border-l border-border bg-card flex flex-col">
-      {/* Header */}
-      <div className="border-b border-border px-4 py-3 flex items-center justify-between">
-        <h2 className="font-semibold text-foreground">People ({PARTICIPANTS.length})</h2>
-        <button className="text-muted-foreground hover:text-foreground">
-          <X className="w-5 h-5" />
-        </button>
-      </div>
+    <div className="sidebar">
+      <div className="sidebar-header">People ({PARTICIPANTS.length})</div>
 
-      {/* Participants List */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="sidebar-content">
         {PARTICIPANTS.map((participant) => (
-          <div
-            key={participant.id}
-            className="px-4 py-3 hover:bg-background/50 border-b border-border/50 transition flex items-center justify-between group"
-          >
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                <div className="w-6 h-6 rounded-full bg-primary/30" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">{participant.name}</p>
-                <div className="flex items-center gap-1 mt-1">
-                  {participant.isMuted ? (
-                    <MicOff className="w-3 h-3 text-destructive" />
-                  ) : (
-                    <Mic className="w-3 h-3 text-muted-foreground" />
-                  )}
-                  {!participant.isVideoOn && <VideoOff className="w-3 h-3 text-destructive" />}
-                  {participant.isHandRaised && <Hand className="w-3 h-3 text-accent ml-auto" />}
-                </div>
+          <div key={participant.id} className="participant-item">
+            <div className="participant-avatar">{participant.name.charAt(0)}</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ color: "#e5e7eb", fontSize: "0.875rem", fontWeight: 500 }}>{participant.name}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", marginTop: "0.25rem" }}>
+                {participant.isMuted ? (
+                  <span style={{ fontSize: "0.75rem" }}>🔇</span>
+                ) : (
+                  <span style={{ fontSize: "0.75rem", color: "#6b7280" }}>🎤</span>
+                )}
+                {!participant.isVideoOn && <span style={{ fontSize: "0.75rem" }}>📹</span>}
+                {participant.isHandRaised && (
+                  <span style={{ fontSize: "0.75rem", color: "#eab308", marginLeft: "auto" }}>✋</span>
+                )}
               </div>
             </div>
-            <button className="opacity-0 group-hover:opacity-100 transition p-1 hover:bg-background rounded">
-              <MoreVertical className="w-4 h-4 text-muted-foreground" />
-            </button>
           </div>
         ))}
       </div>
