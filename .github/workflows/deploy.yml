@@ -1,0 +1,51 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run build
+      env:
+        VITE_API_URL: https://api-meeting.infoquang.id.vn
+        VITE_APP_NAME: Meeting Assistant FE
+        VITE_OAUTH_GOOGLE_CLIENT_ID: your_google_client_id
+        VITE_OAUTH_GITHUB_CLIENT_ID: your_github_client_id
+
+    - name: Upload dist via rsync
+      uses: burnett01/rsync-deployments@6.0.0
+      with:
+        switches: -avz --delete
+        path: dist/
+        remote_path: /opt/apps/meeting-assistant-fe/dist/
+        remote_host: ${{ secrets.SSH_HOST }}
+        remote_user: ${{ secrets.SSH_USER }}
+        remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        remote_key_pass: ${{ secrets.SSH_KEY_PASS }}
+
+    - name: Restart container
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          chmod 755 /opt/apps/meeting-assistant-fe
+          chmod -R 755 /opt/apps/meeting-assistant-fe/dist
+          docker restart meeting-assistant-fe-prod || true
+          echo "✅ Deployment completed"

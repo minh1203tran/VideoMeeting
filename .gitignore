@@ -1,0 +1,31 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist
+dist-ssr
+
+# IDE and Editor
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+.shared
+prompts
+Meeting-Assistant
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Test coverage
+coverage
+
+# Build cache
+.cache

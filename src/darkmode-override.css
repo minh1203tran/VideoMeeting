@@ -1,0 +1,28 @@
+/* Force Dark Mode Text Colors - Override all gray text */
+.dark-mode-text-fix {
+  color: #ffffff !important;
+}
+
+.dark-mode-text-fix * {
+  color: inherit !important;
+}
+
+/* Footer specific overrides */
+.dark-footer-text {
+  color: #ffffff !important;
+}
+
+.dark-footer-text a,
+.dark-footer-text p,
+.dark-footer-text span,
+.dark-footer-text div {
+  color: #ffffff !important;
+}
+
+/* Ensure all text elements in dark mode are white */
+[data-dark-mode="true"] .text-gray-600,
+[data-dark-mode="true"] .text-gray-500,
+[data-dark-mode="true"] .text-gray-400,
+[data-dark-mode="true"] .text-gray-300 {
+  color: #ffffff !important;
+}
